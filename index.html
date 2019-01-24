@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Portfolio</title>
+</head>
+<body>
+    <header id="header">
+        <div class="wrap">
+            <h1>
+                <a href="index.html">
+                    Portfolio
+                </a>
+                <button id="clear">Clear</button>
+            </h1>
+        </div>
+    </header>
+
+    <div id="content" class="wrap">
+        </div>
+
+    <footer>
+        <div class="wrap">
+            <small>Jeton Thaçi</small>
+        </div>
+    </footer>
+
+    <script>
+        const content = document.querySelector("#content");
+        const clearButton = document.querySelector("#clear");
+
+        clearButton.onclick = function () {
+            while(content.firstChild) {
+                content.removeChild(content.firstChild);
+            }
+
+            let rows = 0;
+            let columns = 0;
+
+            while (isNaN(rows) || rows < 1 || rows > 64){
+                rows = prompt("Enter the number of rows for the new grid! It must be from 1 to 64.                                                                                                                      ");
+            }
+            while (isNaN(columns) || columns < 1 || columns > 64){
+                columns = prompt("Enter the number of columns for the new grid! It must be from 1 to 64.                                                                                                                        ");
+            }
+            makeGrid(rows, columns)
+        }
+
+        function getColor(){
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            return "rgb(" + r + "," + g + "," + b + ")";
+        }
+
+        function makeGrid(rows = 16, columns = 16) {
+            const n = rows * columns;
+            for(let i = 1; i <= n; i++) {
+                let cell = document.createElement('DIV');
+                let shadow = document.createElement('DIV');
+                cell.classList.add("cell");
+                shadow.classList.add("shadow");
+                content.appendChild(cell);
+                cell.appendChild(shadow);
+            }
+            content.style.gridTemplateRows = "repeat(" + rows+ ", auto)";
+            content.style.gridTemplateColumns = "repeat(" + columns+ ", auto)";
+
+            let y = 0.1;
+            const cells = document.querySelectorAll(".cell");
+            const shadows = document.querySelectorAll(".shadow");
+            for (let i = 0; i < n; i++) {
+                cells[i].onmouseover = function() {
+                    cells[i].style.background = getColor();
+                }
+                cells[i].onmouseout = function() {
+                    cells[i].style.background = "#eee";
+                }
+                shadows[i].onmouseover = function() {
+                    shadows[i].style.opacity = y;
+                    y = (y < 0.9) ? y + 0.1 : 0.1;
+                }
+                shadows[i].onmouseout = function() {
+                    shadows[i].style.opacity = "0";
+                }
+            }
+        }
+        makeGrid();
+
+    </script>
+</body>
+</html>
